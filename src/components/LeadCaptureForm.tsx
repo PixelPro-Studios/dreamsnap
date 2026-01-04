@@ -111,14 +111,21 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 py-12">
-      <div className="card max-w-2xl w-full">
-        <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
-          Almost There!
-        </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Share your details to receive your photo
-        </p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 py-12 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="card max-w-2xl w-full shadow-2xl">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 p-4 rounded-2xl mb-4">
+            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
+            Almost There!
+          </h2>
+          <p className="text-gray-600 text-lg">
+            Share your details to receive your photo
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Full Name */}
@@ -202,34 +209,36 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
           </div>
 
           {/* Consent */}
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-gradient-to-r from-primary-50 to-pink-50 p-5 rounded-xl border-2 border-primary-200">
             <label className="flex items-start cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.consentGiven}
                 onChange={(e) => setFormData({ ...formData, consentGiven: e.target.checked })}
-                className="mt-1 mr-3 w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+                className="mt-1 mr-3 w-6 h-6 text-primary-600 border-gray-300 rounded-md focus:ring-primary-500 focus:ring-2"
               />
-              <span className="text-sm text-gray-700">
+              <span className="text-sm text-gray-800 font-medium">
                 I allow DreamSnap and the event organizer to use this photo for promotional purposes. *
               </span>
             </label>
             {errors.consent && (
-              <p className="text-red-500 text-sm mt-2 ml-8">{errors.consent}</p>
+              <p className="text-red-500 text-sm mt-2 ml-9 font-semibold">{errors.consent}</p>
             )}
           </div>
 
           {/* Privacy note */}
-          <div className="text-xs text-gray-500 text-center">
-            Your information will be used solely for delivering your photo and marketing
-            purposes. We respect your privacy.
+          <div className="text-sm text-gray-600 text-center bg-gray-50 p-4 rounded-lg">
+            <svg className="w-5 h-5 inline-block mr-2 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+            </svg>
+            Your information will be used solely for delivering your photo and marketing purposes. We respect your privacy.
           </div>
 
           {/* Submit button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn-primary w-full text-lg"
+            className="btn-primary w-full text-lg py-4 shadow-xl hover:shadow-2xl transition-all"
           >
             {isSubmitting ? (
               <>

@@ -106,12 +106,14 @@ export const sendPhotoToTelegram = async ({
  * @param fullName - Names of the couple
  * @param theme - Selected theme name
  * @param instagramHandles - Optional Instagram handles
+ * @param phoneNumber - Optional phone number with country code
  * @returns Formatted caption string
  */
 export const createTelegramCaption = (
   fullName: string,
   theme: string,
-  instagramHandles?: string[]
+  instagramHandles?: string[],
+  phoneNumber?: string
 ): string => {
   let caption = `✨ ${fullName}\n🎨 Theme: ${theme}`;
 
@@ -120,6 +122,10 @@ export const createTelegramCaption = (
     if (handles) {
       caption += `\n📸 ${handles}`;
     }
+  }
+
+  if (phoneNumber) {
+    caption += `\n📱 ${phoneNumber}`;
   }
 
   caption += '\n\n💫 Created with DreamSnap AI Photography';

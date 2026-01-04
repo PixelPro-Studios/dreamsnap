@@ -10,13 +10,15 @@ export const themes: Theme[] = [
     themeImage: '/themeImage/1.Beach.jpg',
     promptTemplate: `Transform this photo into a romantic beach wedding portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into elegant beach wedding attire - this is MANDATORY
@@ -84,13 +86,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/3.Game of Thrones.jpg',
     promptTemplate: `Transform this photo into epic Game of Thrones fantasy style.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into medieval fantasy royal attire - this is MANDATORY
@@ -123,13 +127,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/4.Garden Party 1.jpg',
     promptTemplate: `Transform this photo into an elegant garden party portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into elegant garden party attire - this is MANDATORY
@@ -162,13 +168,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/5.Garden Party 2.jpg',
     promptTemplate: `Transform this photo into a romantic garden party wedding portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into romantic garden wedding attire - this is MANDATORY
@@ -201,13 +209,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/6.Halloween.jpg',
     promptTemplate: `Transform this photo into festive Halloween portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into Halloween-themed attire - this is MANDATORY
@@ -240,13 +250,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/7.Harry Porter.jpg',
     promptTemplate: `Transform this photo into magical Harry Potter wizarding world portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - REMOVE the people in the current reference image
@@ -322,13 +334,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/9.Top of Mountain.jpg',
     promptTemplate: `Transform this photo into adventurous mountain summit portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into mountain adventure attire - this is MANDATORY
@@ -483,13 +497,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/13.Winter Wonderland.jpg',
     promptTemplate: `Transform this photo into magical winter wonderland portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into elegant winter attire - this is MANDATORY
@@ -522,13 +538,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/14.Military.jpg',
     promptTemplate: `Transform this photo into distinguished military formal portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into military dress uniform - this is MANDATORY
@@ -561,13 +579,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/15. Garden Wedding.jpg',
     promptTemplate: `Transform this photo into classic garden wedding portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into classic garden wedding attire - this is MANDATORY
@@ -600,13 +620,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/16.Hot air balloon field.jpg',
     promptTemplate: `Transform this photo into whimsical hot air balloon adventure portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into adventure/travel elegant attire - this is MANDATORY
@@ -674,13 +696,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/18. Sand Dunes Wedding.jpg',
     promptTemplate: `Transform this photo into romantic desert sand dunes wedding portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into elegant desert wedding attire - this is MANDATORY
@@ -713,13 +737,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/19. Singapore Coffee Shop.jpg',
     promptTemplate: `Transform this photo into nostalgic Singapore coffee shop portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into casual Singapore local style - this is MANDATORY
@@ -752,13 +778,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/20.Ski Resort.jpg',
     promptTemplate: `Transform this photo into elegant ski resort winter portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into stylish ski resort attire - this is MANDATORY
@@ -791,13 +819,15 @@ CRITICAL OUTPUT FORMAT:
     themeImage: '/themeImage/21. Tropical beach wedding.jpg',
     promptTemplate: `Transform this photo into paradise tropical beach wedding portrait.
 
-CRITICAL - PRESERVE THE FACE (ABSOLUTE REQUIREMENT):
-- MUST use the EXACT face(s) from the captured image - NO EXCEPTIONS
-- DO NOT modify, alter, or change facial features in ANY way
-- Keep facial features, face shape, facial structure, skin tone, and all facial characteristics 100% IDENTICAL
-- Preserve exact eye shape, nose, mouth, facial proportions, and bone structure
-- FACE LIGHTING SHOULD BE ADJUSTED to match the surrounding environment and scene lighting
-- This is MANDATORY and NON-NEGOTIABLE - any face modification is a critical failure
+🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
+
+1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
+2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
+3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
+4. NO beautification, NO facial smoothing, NO AI enhancements
+5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
+
+⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
 
 REQUIRED CHANGES:
 - ALWAYS transform ALL clothing into tropical beach wedding attire - this is MANDATORY

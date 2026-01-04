@@ -23,17 +23,26 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 py-12">
-      <div className="card max-w-7xl w-full">
-        <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
-          Choose Your Theme
-        </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Select a style for your AI-transformed photo
-        </p>
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto p-4 py-12 pb-32">
+        <div className="card max-w-7xl w-full mx-auto shadow-2xl">
+          <div className="text-center mb-8">
+            <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 p-4 rounded-2xl mb-4">
+              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </div>
+            <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
+              Choose Your Theme
+            </h2>
+            <p className="text-gray-600 text-lg">
+              Select a style for your AI-transformed photo
+            </p>
+          </div>
 
-        {/* Theme grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+          {/* Theme grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
           {themes.map((theme) => (
             <div
               key={theme.id}
@@ -124,23 +133,31 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
           ))}
         </div>
 
-        {/* Selected theme preview */}
-        {selectedTheme && (
-          <div className="mb-8 p-6 bg-gradient-to-r from-primary-50 to-pink-50 rounded-xl">
-            <h3 className="text-xl font-semibold text-center mb-2 text-gray-800">
-              Selected Theme: {selectedTheme.name}
-            </h3>
-            <p className="text-center text-gray-600 max-w-2xl mx-auto">
-              {selectedTheme.description}
-            </p>
-          </div>
-        )}
+          {/* Selected theme preview */}
+          {selectedTheme && (
+            <div className="mb-8 p-6 bg-gradient-to-r from-primary-50 to-pink-50 rounded-2xl shadow-lg border-2 border-primary-200">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <svg className="w-6 h-6 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <h3 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-pink-600">
+                  {selectedTheme.name}
+                </h3>
+              </div>
+              <p className="text-center text-gray-700 max-w-2xl mx-auto text-lg">
+                {selectedTheme.description}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
 
-        {/* Action buttons */}
-        <div className="flex gap-4 justify-center">
-          <button onClick={onBack} className="btn-secondary">
+      {/* Fixed bottom buttons */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white bg-opacity-95 backdrop-blur-lg border-t-2 border-gray-200 shadow-2xl p-4 z-50">
+        <div className="max-w-7xl mx-auto flex gap-4 justify-center">
+          <button onClick={onBack} className="btn-secondary flex items-center gap-2 px-6 py-3 text-lg shadow-lg hover:shadow-xl transition-all">
             <svg
-              className="w-5 h-5 inline-block mr-2"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -148,7 +165,7 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 d="M10 19l-7-7m0 0l7-7m-7 7h18"
               />
             </svg>
@@ -158,11 +175,11 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
           <button
             onClick={handleContinue}
             disabled={!selectedTheme}
-            className="btn-primary"
+            className="btn-primary flex items-center gap-2 px-8 py-3 text-lg shadow-xl hover:shadow-2xl transition-all"
           >
             Generate AI Photo
             <svg
-              className="w-5 h-5 inline-block ml-2"
+              className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -170,7 +187,7 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 d="M13 10V3L4 14h7v7l9-11h-7z"
               />
             </svg>
@@ -178,8 +195,8 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
         </div>
 
         {!selectedTheme && (
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Select a theme to continue
+          <p className="text-center text-sm text-gray-600 mt-3 font-medium">
+            ✨ Select a theme to continue
           </p>
         )}
       </div>

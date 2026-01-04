@@ -6,7 +6,7 @@ interface PhotoSelectionProps {
   onBack: () => void;
 }
 
-export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }) => {
+export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext }) => {
   const { capturedPhotos, selectedPhoto, selectPhoto } = useAppStore();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
@@ -21,24 +21,31 @@ export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <div className="card max-w-6xl w-full">
-        <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
-          Select Your Best Photo
-        </h2>
-        <p className="text-center text-gray-600 mb-8">
-          Choose the photo you like best for your AI transformation
-        </p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="card max-w-6xl w-full shadow-2xl">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 p-4 rounded-2xl mb-4">
+            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
+            Select Your Best Photo
+          </h2>
+          <p className="text-gray-600 text-lg">
+            Choose the photo you like best for your AI transformation
+          </p>
+        </div>
 
         {/* Photo grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           {capturedPhotos.map((photo, index) => (
             <div
               key={index}
-              className={`relative cursor-pointer rounded-lg overflow-hidden transition-all duration-300 ${
+              className={`relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 shadow-lg ${
                 selectedPhoto === photo
-                  ? 'ring-4 ring-primary-600 scale-105'
-                  : 'hover:scale-105'
+                  ? 'ring-4 ring-primary-600 scale-105 shadow-2xl'
+                  : 'hover:scale-105 hover:shadow-xl'
               }`}
               onClick={() => handleSelectPhoto(photo)}
               onMouseEnter={() => setHoveredIndex(index)}
@@ -52,10 +59,10 @@ export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }
 
               {/* Selection indicator */}
               {selectedPhoto === photo && (
-                <div className="absolute inset-0 bg-primary-600 bg-opacity-20 flex items-center justify-center">
-                  <div className="bg-white rounded-full p-3">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-pink-600 bg-opacity-20 flex items-center justify-center backdrop-blur-sm">
+                  <div className="bg-white rounded-full p-3 shadow-2xl">
                     <svg
-                      className="w-8 h-8 text-primary-600"
+                      className="w-10 h-10 text-primary-600"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -97,7 +104,7 @@ export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }
               )}
 
               {/* Photo number badge */}
-              <div className="absolute top-2 left-2 bg-black bg-opacity-50 text-white text-xs px-2 py-1 rounded-full">
+              <div className="absolute top-2 left-2 bg-gradient-to-br from-primary-600 to-pink-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                 {index + 1}
               </div>
             </div>
@@ -106,11 +113,14 @@ export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }
 
         {/* Selected preview */}
         {selectedPhoto && (
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-center mb-4 text-gray-700">
+          <div className="mb-8 p-6 bg-gradient-to-r from-primary-50 to-pink-50 rounded-2xl">
+            <h3 className="text-xl font-semibold text-center mb-4 text-gray-800 flex items-center justify-center gap-2">
+              <svg className="w-6 h-6 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
               Selected Photo Preview
             </h3>
-            <div className="max-w-md mx-auto rounded-xl overflow-hidden shadow-2xl">
+            <div className="max-w-md mx-auto rounded-2xl overflow-hidden shadow-2xl ring-4 ring-primary-600 ring-opacity-50">
               <img
                 src={selectedPhoto}
                 alt="Selected photo"
@@ -122,7 +132,7 @@ export const PhotoSelection: React.FC<PhotoSelectionProps> = ({ onNext, onBack }
 
         {/* Action buttons */}
         <div className="flex gap-4 justify-center">
-          <button onClick={onBack} className="btn-secondary">
+          <button onClick={() => window.location.reload()} className="btn-secondary">
             <svg
               className="w-5 h-5 inline-block mr-2"
               fill="none"

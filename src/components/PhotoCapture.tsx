@@ -141,8 +141,8 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
 
           {/* Countdown overlay */}
           {countdown !== null && countdown > 0 && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-              <div className="text-9xl font-bold text-white animate-ping">
+            <div className="absolute inset-0 flex items-center justify-center z-30 bg-black bg-opacity-30">
+              <div className="text-9xl font-bold text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] animate-pulse">
                 {countdown}
               </div>
             </div>
@@ -162,22 +162,6 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* Progress indicator - top of screen */}
-          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-20">
-            <div className="flex gap-2">
-              {Array.from({ length: PHOTO_COUNT }).map((_, index) => (
-                <div
-                  key={index}
-                  className={`h-2 w-10 rounded-full transition-all ${
-                    index < capturedPhotos.length
-                      ? 'bg-white'
-                      : 'bg-white bg-opacity-30'
-                  }`}
-                ></div>
-              ))}
-            </div>
-          </div>
-
           {/* Controls - bottom of screen */}
           <div className="absolute bottom-0 left-0 right-0 pb-8 px-6 z-20">
             <div className="flex items-center justify-between max-w-xl mx-auto">
@@ -185,44 +169,30 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
               <button
                 onClick={toggleCamera}
                 disabled={isCapturing}
-                className="w-14 h-14 rounded-full bg-white bg-opacity-30 backdrop-blur-md flex items-center justify-center text-white hover:bg-opacity-40 transition-all disabled:opacity-50 shadow-lg"
+                className="w-16 h-16 rounded-full bg-white bg-opacity-90 backdrop-blur-md flex items-center justify-center text-gray-800 hover:bg-opacity-100 hover:scale-110 transition-all disabled:opacity-50 shadow-2xl border-2 border-white border-opacity-50"
               >
                 <svg
-                  className="w-8 h-8"
-                  fill="currentColor"
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M20 5h-3.17L15 3H9L7.17 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-5 11.5V13H9v3.5L5.5 12.5 9 8.5V12h6V8.5l3.5 4-3.5 4z"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
                 </svg>
               </button>
 
               {/* Capture button */}
               <button
                 onClick={startCapture}
-                disabled={isCapturing || capturedPhotos.length === PHOTO_COUNT}
-                className="w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform disabled:opacity-50 disabled:scale-100"
+                disabled={isCapturing}
+                className="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all disabled:opacity-50 disabled:scale-100 border-4 border-white border-opacity-50"
               >
-                {capturedPhotos.length === 0 ? (
-                  <div className="w-16 h-16 rounded-full border-4 border-black"></div>
-                ) : (
-                  <svg
-                    className="w-10 h-10 text-black"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                    />
-                  </svg>
-                )}
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-500 to-pink-500 border-4 border-white shadow-inner"></div>
               </button>
 
               {/* Placeholder for symmetry */}
-              <div className="w-14 h-14"></div>
+              <div className="w-16 h-16"></div>
             </div>
 
             {/* Capturing status text */}
