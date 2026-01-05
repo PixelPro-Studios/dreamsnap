@@ -13,6 +13,7 @@ export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 // Database operations
 export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: any }> => {
   try {
+    console.log('💾 Attempting to save lead data...');
     const { data, error } = await supabase
       .from('leads')
       .insert([
@@ -30,9 +31,19 @@ export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: 
       .select()
       .single();
 
+    if (error) {
+      console.error('❌ Error saving lead:', error);
+      if (error.code === '42501' || error.message?.includes('permission') || error.message?.includes('policy')) {
+        console.error('🔒 Permission denied - RLS policies may not be configured correctly');
+        console.error('📋 Please run the SQL commands in supabase-rls-policies.sql file');
+      }
+    } else {
+      console.log('✅ Lead saved successfully:', data);
+    }
+
     return { data: data as Lead, error };
   } catch (error) {
-    console.error('Error saving lead:', error);
+    console.error('❌ Exception while saving lead:', error);
     return { data: null, error };
   }
 };
@@ -86,8 +97,6 @@ export const uploadImageToStorage = async (
       console.error('❌ Error uploading to storage:', error);
       console.error('Error details:', {
         message: error.message,
-        statusCode: error.statusCode,
-        error: error.error,
       });
       return { url: null, error };
     }

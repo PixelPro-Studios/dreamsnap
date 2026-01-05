@@ -130,11 +130,12 @@ module.exports = {
 
 ### Default Fonts
 
-**System Font Stack:**
+**Serif Font Stack (Current):**
 ```css
-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-             Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
 ```
+
+**DreamSnap uses elegant serif typography throughout the application for a premium, sophisticated look.**
 
 ### Custom Font Integration
 
@@ -147,7 +148,7 @@ Edit `index.html`:
   <!-- Add Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 ```
 
@@ -158,28 +159,28 @@ Edit `src/index.css`:
 ```css
 @layer base {
   body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
   }
 
-  h1, h2, h3 {
-    font-family: 'Playfair Display', serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
   }
 }
 ```
 
 ### Font Recommendations
 
-**Elegant Events:**
-- Headings: `Playfair Display`, `Cormorant Garamond`
-- Body: `Inter`, `Lato`
+**Elegant Events (Serif-focused):**
+- Primary: `Playfair Display` (current)
+- Alternative: `Cormorant Garamond`, `Lora`, `Crimson Text`
 
-**Modern Corporate:**
-- Headings: `Montserrat`, `Poppins`
-- Body: `Open Sans`, `Source Sans Pro`
+**Luxury Events:**
+- Primary: `Bodoni Moda`, `Libre Baskerville`
+- Alternative: `EB Garamond`, `Merriweather`
 
-**Playful Fun:**
-- Headings: `Lobster`, `Pacifico`
-- Body: `Quicksand`, `Raleway`
+**Classic Elegance:**
+- Primary: `Georgia`, `Baskerville`
+- Alternative: `Palatino`, `Garamond`
 
 ---
 

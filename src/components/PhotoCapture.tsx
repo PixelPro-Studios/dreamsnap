@@ -141,7 +141,7 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
 
           {/* Countdown overlay */}
           {countdown !== null && countdown > 0 && (
-            <div className="absolute inset-0 flex items-center justify-center z-30 bg-black bg-opacity-30">
+            <div className="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
               <div className="text-9xl font-bold text-white drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] animate-pulse">
                 {countdown}
               </div>

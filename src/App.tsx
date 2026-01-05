@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/stores/appStore';
 import { Lead } from '@/types';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // Components
 import { PhotoCapture } from '@/components/PhotoCapture';
@@ -14,6 +16,7 @@ import { LeadCaptureForm } from '@/components/LeadCaptureForm';
 // Pages
 import { SuccessPage } from '@/pages/SuccessPage';
 import { GalleryPage } from '@/pages/GalleryPage';
+import { LoginPage } from '@/pages/LoginPage';
 
 type Step =
   | 'capture'
@@ -25,7 +28,6 @@ type Step =
   | 'success';
 
 function MainFlow() {
-  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<Step>('capture');
   const [leadData, setLeadData] = useState<Lead | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -36,10 +38,6 @@ function MainFlow() {
     setLeadData(null);
     setError(null);
     setCurrentStep('capture');
-  };
-
-  const handleViewGallery = () => {
-    navigate('/gallery');
   };
 
   const handleFormSubmit = (data: Lead) => {
@@ -131,32 +129,9 @@ function MainFlow() {
       {currentStep === 'success' && leadData && (
         <SuccessPage
           leadData={leadData}
-          onViewGallery={handleViewGallery}
           onStartOver={handleStartOver}
         />
       )}
-
-      {/* Progress indicator */}
-      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-lg px-6 py-2 flex gap-2 z-40">
-        {['capture', 'select', 'theme', 'generate', 'preview', 'form', 'success'].map(
-          (step, index) => (
-            <div
-              key={step}
-              className={`w-2 h-2 rounded-full transition-all ${
-                currentStep === step
-                  ? 'bg-primary-600 w-6'
-                  : index <
-                    ['capture', 'select', 'theme', 'generate', 'preview', 'form', 'success'].indexOf(
-                      currentStep
-                    )
-                  ? 'bg-primary-400'
-                  : 'bg-gray-300'
-              }`}
-              title={step}
-            ></div>
-          )
-        )}
-      </div>
     </div>
   );
 }
@@ -172,10 +147,22 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route path="/" element={<MainFlow />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <MainFlow />
+          </ProtectedRoute>
+        }
+      />
       <Route
         path="/gallery"
-        element={<GalleryPage onStartNew={handleStartNew} />}
+        element={
+          <ProtectedRoute>
+            <GalleryPage onStartNew={handleStartNew} />
+          </ProtectedRoute>
+        }
       />
     </Routes>
   );
@@ -184,7 +171,9 @@ function AppContent() {
 function App() {
   return (
     <BrowserRouter>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </BrowserRouter>
   );
 }

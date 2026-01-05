@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAppStore } from '@/stores/appStore';
 import { downloadImage, generateFilename } from '@/lib/imageUtils';
 import { saveLead, saveGalleryPhoto } from '@/lib/supabase';
@@ -17,6 +18,7 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
   const { finalImage, selectedTheme } = useAppStore();
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
+  const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(null);
   const hasProcessedRef = useRef(false);
 
   useEffect(() => {
@@ -83,6 +85,10 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
             } else {
               console.log('✅ Photo uploaded to storage and saved to gallery database');
               console.log('📊 Gallery data:', galleryResult.data);
+              // Store the public URL for QR code
+              if (galleryResult.data?.image_url) {
+                setImagePublicUrl(galleryResult.data.image_url);
+              }
             }
           } catch (galleryError) {
             console.error('❌ Failed to save to gallery database:', galleryError);
@@ -102,84 +108,74 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 py-12 bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="card max-w-3xl w-full shadow-2xl">
+    <div className="flex items-center justify-center min-h-screen p-2 sm:p-4 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="card max-w-5xl w-full shadow-2xl p-3 sm:p-6">
         {status === 'processing' && (
           <div className="text-center">
-            <div className="inline-block relative mb-6">
-              <div className="w-24 h-24 border-8 border-primary-200 border-t-primary-600 rounded-full animate-spin shadow-2xl"></div>
+            <div className="inline-block relative mb-3">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 border-6 sm:border-8 border-primary-200 border-t-primary-600 rounded-full animate-spin shadow-2xl"></div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-white rounded-full p-3 shadow-xl">
-                  <svg className="w-8 h-8 text-primary-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white rounded-full p-1.5 sm:p-2 shadow-xl">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
               </div>
             </div>
-            <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">Processing Your Photo...</h2>
-            <p className="text-gray-700 text-lg">Please wait while we save and share your photo</p>
+            <h2 className="text-xl sm:text-2xl font-bold mb-1.5 sm:mb-2 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">Processing Your Photo...</h2>
+            <p className="text-gray-700 text-sm sm:text-base">Please wait while we save and share your photo</p>
           </div>
         )}
 
         {(status === 'success' || status === 'error') && (
           <>
-            {/* Success icon */}
-            <div className="text-center mb-8">
-              <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 rounded-full p-8 mb-6 shadow-2xl">
-                <svg
-                  className="w-20 h-20 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={3}
-                    d="M5 13l4 4L19 7"
-                  />
+            {/* Success header - compact */}
+            <div className="text-center mb-2 sm:mb-4">
+              <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 rounded-full p-2.5 sm:p-4 mb-2 sm:mb-3 shadow-xl">
+                <svg className="w-7 h-7 sm:w-10 sm:h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-1 sm:mb-2 bg-gradient-to-r from-primary-600 to-pink-600 bg-clip-text text-transparent">
                 {status === 'success' ? 'All Done! ✨' : 'Oops!'}
               </h2>
-              <p className="text-gray-700 text-xl font-medium">
-                {status === 'success'
-                  ? 'Your photo will be sent to you shortly'
-                  : 'We encountered some issues'}
+              <p className="text-gray-700 text-sm sm:text-base font-medium">
+                {status === 'success' ? 'Your photo will be sent to you shortly' : 'We encountered some issues'}
               </p>
             </div>
 
-            {/* Image preview */}
-            {finalImage && (
-              <div className="mb-8 p-6 bg-gradient-to-r from-primary-50 to-pink-50 rounded-2xl">
-                <h3 className="font-bold text-center mb-4 text-2xl text-gray-800 flex items-center justify-center gap-2">
-                  <svg className="w-7 h-7 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Your Photo
-                </h3>
-                <div className="rounded-2xl overflow-hidden shadow-2xl max-w-md mx-auto ring-4 ring-primary-600 ring-opacity-50">
-                  <img src={finalImage} alt="Final photo" className="w-full h-auto" />
+            {/* QR Code section - centered */}
+            {imagePublicUrl && (
+              <div className="mb-4 sm:mb-6 flex justify-center">
+                <div className="p-4 sm:p-6 bg-gradient-to-r from-primary-50 to-pink-50 rounded-lg sm:rounded-xl border-2 border-primary-200 shadow-lg flex flex-col items-center justify-center max-w-md">
+                  <h3 className="font-bold text-center mb-3 sm:mb-4 text-base sm:text-xl text-gray-800 flex items-center justify-center gap-2">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                    Scan to Download
+                  </h3>
+                  <div className="bg-white p-4 sm:p-6 rounded-lg shadow-xl mb-3 sm:mb-4">
+                    <QRCodeSVG
+                      value={imagePublicUrl}
+                      size={180}
+                      level="H"
+                      fgColor="#000000"
+                      bgColor="#FFFFFF"
+                      className="sm:w-[220px] sm:h-[220px]"
+                    />
+                  </div>
+                  <p className="text-center text-gray-700 text-sm sm:text-base font-medium px-2">
+                    Scan with your phone to download instantly
+                  </p>
                 </div>
               </div>
             )}
 
-            {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button onClick={onStartOver} className="btn-primary flex items-center justify-center gap-2 px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                  />
+            {/* Action button */}
+            <div className="flex justify-center">
+              <button onClick={onStartOver} className="btn-primary flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
                 Create Another Photo
               </button>

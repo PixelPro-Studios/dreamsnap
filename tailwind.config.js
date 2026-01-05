@@ -20,6 +20,10 @@ export default {
           900: '#701a75',
         },
       },
+      fontFamily: {
+        sans: ['Playfair Display', 'Georgia', 'Times New Roman', 'serif'],
+        serif: ['Playfair Display', 'Georgia', 'Times New Roman', 'serif'],
+      },
     },
   },
   plugins: [],

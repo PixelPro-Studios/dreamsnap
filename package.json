@@ -44,6 +44,7 @@
     "axios": "^1.13.2",
     "browser-image-compression": "^2.0.2",
     "libphonenumber-js": "^1.12.33",
+    "qrcode.react": "^4.2.0",
     "react-router-dom": "^7.11.0",
     "react-webcam": "^7.2.0",
     "zustand": "^5.0.9"
