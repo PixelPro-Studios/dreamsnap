@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import imageCompression from 'browser-image-compression';
 import { Lead } from '@/types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -10,32 +11,79 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 
+/**
+ * Retry helper function with exponential backoff
+ */
+const retryWithBackoff = async <T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  initialDelay: number = 1000
+): Promise<T> => {
+  let lastError: any;
+
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      lastError = error;
+
+      // Don't retry on client errors (4xx) or auth errors
+      if (error?.status && error.status >= 400 && error.status < 500) {
+        throw error;
+      }
+
+      // Check if it's a network error
+      const isNetworkError =
+        error?.message?.includes('network') ||
+        error?.message?.includes('connection') ||
+        error?.message?.includes('fetch') ||
+        !navigator.onLine;
+
+      // Last attempt or not a network error
+      if (attempt === maxRetries - 1 || !isNetworkError) {
+        throw error;
+      }
+
+      // Wait before retrying with exponential backoff
+      const delay = initialDelay * Math.pow(2, attempt);
+      console.log(`Retry attempt ${attempt + 1}/${maxRetries} after ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+
+  throw lastError;
+};
+
 // Database operations
 export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: any }> => {
   try {
-    const { data, error } = await supabase
-      .from('leads')
-      .insert([
-        {
-          full_name: lead.fullName,
-          instagram_handle_1: lead.instagramHandle1 || null,
-          instagram_handle_2: lead.instagramHandle2 || null,
-          phone_number: lead.phoneNumber,
-          country_code: lead.countryCode,
-          consent_given: lead.consentGiven,
-          theme_selected: lead.themeSelected,
-          event_id: lead.eventId || import.meta.env.VITE_EVENT_ID || 'default',
-        },
-      ])
-      .select()
-      .single();
+    const result = await retryWithBackoff(async () => {
+      const { data, error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            full_name: lead.fullName,
+            instagram_handle_1: lead.instagramHandle1 || null,
+            instagram_handle_2: lead.instagramHandle2 || null,
+            phone_number: lead.phoneNumber,
+            country_code: lead.countryCode,
+            consent_given: lead.consentGiven,
+            theme_selected: lead.themeSelected,
+            event_id: lead.eventId || import.meta.env.VITE_EVENT_ID || 'default',
+          },
+        ])
+        .select()
+        .single();
 
-    if (error) {
-      console.error('Error saving lead:', error.message);
-    }
+      if (error) {
+        throw error;
+      }
 
-    return { data: data as Lead, error };
-  } catch (error) {
+      return { data: data as Lead, error: null };
+    });
+
+    return result;
+  } catch (error: any) {
     console.error('Failed to save lead:', error);
     return { data: null, error };
   }
@@ -60,6 +108,7 @@ const base64ToBlob = (base64: string, contentType: string = 'image/jpeg'): Blob 
 
 /**
  * Upload image to Supabase Storage and return public URL
+ * Compresses image to ~250KB before upload
  */
 export const uploadImageToStorage = async (
   imageBase64: string,
@@ -71,25 +120,40 @@ export const uploadImageToStorage = async (
     const timestamp = Date.now();
     const uniqueFileName = `${timestamp}-${fileName}.jpg`;
 
-    const { error } = await supabase.storage
-      .from(bucket)
-      .upload(uniqueFileName, blob, {
-        contentType: 'image/jpeg',
-        cacheControl: '3600',
-        upsert: false,
-      });
+    // Compress image to approximately 250KB
+    const compressionOptions = {
+      maxSizeMB: 0.25, // 250KB
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+      fileType: 'image/jpeg',
+      initialQuality: 0.8,
+    };
 
-    if (error) {
-      console.error('Storage upload failed:', error.message);
-      return { url: null, error };
-    }
+    const compressedBlob = await imageCompression(blob as File, compressionOptions);
 
-    const { data: { publicUrl } } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(uniqueFileName);
+    // Upload with retry logic
+    const result = await retryWithBackoff(async () => {
+      const { error } = await supabase.storage
+        .from(bucket)
+        .upload(uniqueFileName, compressedBlob, {
+          contentType: 'image/jpeg',
+          cacheControl: '3600',
+          upsert: false,
+        });
 
-    return { url: publicUrl, error: null };
-  } catch (error) {
+      if (error) {
+        throw error;
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(uniqueFileName);
+
+      return { url: publicUrl, error: null };
+    });
+
+    return result;
+  } catch (error: any) {
     console.error('Image upload error:', error);
     return { url: null, error };
   }
@@ -117,27 +181,31 @@ export const saveGalleryPhoto = async (photoData: {
       return { data: null, error: uploadError };
     }
 
-    const { data, error } = await supabase
-      .from('gallery_photos')
-      .insert([
-        {
-          image_url: imageUrl,
-          caption: photoData.caption,
-          full_name: photoData.fullName,
-          theme_selected: photoData.themeSelected,
-          event_id: photoData.eventId,
-        },
-      ])
-      .select()
-      .single();
+    // Save to database with retry logic
+    const result = await retryWithBackoff(async () => {
+      const { data, error } = await supabase
+        .from('gallery_photos')
+        .insert([
+          {
+            image_url: imageUrl,
+            caption: photoData.caption,
+            full_name: photoData.fullName,
+            theme_selected: photoData.themeSelected,
+            event_id: photoData.eventId,
+          },
+        ])
+        .select()
+        .single();
 
-    if (error) {
-      console.error('Error saving gallery photo:', error.message);
-      return { data: null, error };
-    }
+      if (error) {
+        throw error;
+      }
 
-    return { data, error: null };
-  } catch (error) {
+      return { data, error: null };
+    });
+
+    return result;
+  } catch (error: any) {
     console.error('Gallery photo save failed:', error);
     return { data: null, error };
   }

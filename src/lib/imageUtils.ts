@@ -93,11 +93,15 @@ export const overlayWatermarkOnImage = async (
         canvas.width = image.width;
         canvas.height = image.height;
 
+        // Enable high-quality image smoothing
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+
         // Draw the generated image
         ctx.drawImage(image, 0, 0);
 
-        // Calculate watermark dimensions (max 300px width, maintain aspect ratio)
-        const maxWatermarkWidth = 300;
+        // Calculate watermark dimensions (max 200px width, maintain aspect ratio)
+        const maxWatermarkWidth = 150;
         const watermarkAspectRatio = watermark.width / watermark.height;
         const watermarkWidth = Math.min(maxWatermarkWidth, watermark.width);
         const watermarkHeight = watermarkWidth / watermarkAspectRatio;
@@ -107,11 +111,12 @@ export const overlayWatermarkOnImage = async (
         const watermarkY = canvas.height - watermarkHeight - 45;
 
         // Draw white pillbox background behind watermark
-        const padding = 16; // 16px padding on all sides
-        const pillboxX = watermarkX - padding;
-        const pillboxY = watermarkY - padding;
-        const pillboxWidth = watermarkWidth + (padding * 2);
-        const pillboxHeight = watermarkHeight + (padding * 2);
+        const paddingX = 16; // 16px padding left/right
+        const paddingY = 10; // 10px padding top/bottom (reduced for less height)
+        const pillboxX = watermarkX - paddingX;
+        const pillboxY = watermarkY - paddingY;
+        const pillboxWidth = watermarkWidth + (paddingX * 2);
+        const pillboxHeight = watermarkHeight + (paddingY * 2);
         const borderRadius = pillboxHeight / 2; // Full rounded ends
 
         ctx.fillStyle = 'rgba(255, 255, 255, 0.95)'; // Semi-transparent white
@@ -122,8 +127,8 @@ export const overlayWatermarkOnImage = async (
         // Draw the watermark on top of the pillbox
         ctx.drawImage(watermark, watermarkX, watermarkY, watermarkWidth, watermarkHeight);
 
-        // Convert canvas to base64
-        const result = canvas.toDataURL('image/jpeg', 0.95);
+        // Convert canvas to base64 with maximum quality
+        const result = canvas.toDataURL('image/jpeg', 1.0);
         resolve(result);
       }
     };

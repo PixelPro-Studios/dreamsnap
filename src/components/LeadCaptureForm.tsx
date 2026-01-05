@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js';
 import { useAppStore } from '@/stores/appStore';
 import { Lead } from '@/types';
 
@@ -15,24 +14,29 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
     instagramHandle1: '',
     instagramHandle2: '',
     phoneNumber: '',
-    countryCode: '+1',
+    countryCode: '+65', // Default to Singapore
     consentGiven: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Common country codes
   const countryCodes = [
-    { code: '+1', country: 'US/CA' },
-    { code: '+44', country: 'UK' },
-    { code: '+91', country: 'IN' },
-    { code: '+65', country: 'SG' },
-    { code: '+60', country: 'MY' },
-    { code: '+61', country: 'AU' },
-    { code: '+64', country: 'NZ' },
-    { code: '+86', country: 'CN' },
-    { code: '+81', country: 'JP' },
-    { code: '+82', country: 'KR' },
+    { code: '+1', name: 'US/Canada' },
+    { code: '+44', name: 'UK' },
+    { code: '+61', name: 'Australia' },
+    { code: '+65', name: 'Singapore' },
+    { code: '+60', name: 'Malaysia' },
+    { code: '+62', name: 'Indonesia' },
+    { code: '+66', name: 'Thailand' },
+    { code: '+63', name: 'Philippines' },
+    { code: '+84', name: 'Vietnam' },
+    { code: '+86', name: 'China' },
+    { code: '+852', name: 'Hong Kong' },
+    { code: '+91', name: 'India' },
+    { code: '+81', name: 'Japan' },
+    { code: '+82', name: 'South Korea' },
   ];
 
   const validateForm = (): boolean => {
@@ -43,16 +47,11 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
       newErrors.fullName = 'Please enter a valid name (minimum 2 characters)';
     }
 
-    // Validate phone number
-    const fullPhoneNumber = formData.countryCode + formData.phoneNumber;
-    try {
-      if (!formData.phoneNumber.trim()) {
-        newErrors.phoneNumber = 'Phone number is required';
-      } else if (!isValidPhoneNumber(fullPhoneNumber)) {
-        newErrors.phoneNumber = 'Please enter a valid phone number';
-      }
-    } catch {
-      newErrors.phoneNumber = 'Please enter a valid phone number';
+    // Validate phone number (basic validation - at least 6 digits, max 15)
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Phone number is required';
+    } else if (!/^\d{6,15}$/.test(formData.phoneNumber.replace(/[\s-]/g, ''))) {
+      newErrors.phoneNumber = 'Please enter a valid phone number (6-15 digits)';
     }
 
     // Validate consent
@@ -185,11 +184,11 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
               <select
                 value={formData.countryCode}
                 onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                className="input-field w-32"
+                className="input-field w-32 bg-white text-gray-700 font-semibold"
               >
                 {countryCodes.map((country) => (
                   <option key={country.code} value={country.code}>
-                    {country.code} ({country.country})
+                    {country.code}
                   </option>
                 ))}
               </select>
@@ -197,9 +196,10 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) =>
-                  setFormData({ ...formData, phoneNumber: e.target.value.replace(/[^0-9]/g, '') })
+                  setFormData({ ...formData, phoneNumber: e.target.value.replace(/[^0-9\s-]/g, '') })
                 }
-                placeholder="1234567890"
+                placeholder="Enter phone number"
+                maxLength={15}
                 className={`input-field flex-1 ${errors.phoneNumber ? 'border-red-500' : ''}`}
               />
             </div>
@@ -231,7 +231,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
             <svg className="w-5 h-5 inline-block mr-2 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
             </svg>
-            Your information will be used solely for delivering your photo and marketing purposes. We respect your privacy.
+            Your data is used solely for our marketing purposes and will never be transferred or sold to third parties.
           </div>
 
           {/* Submit button */}

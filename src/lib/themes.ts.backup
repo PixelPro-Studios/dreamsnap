@@ -165,7 +165,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'garden-party-romantic',
-    category: 'party',
     name: 'Romantic Garden Party',
     description: 'Dreamy garden wedding with romantic florals',
     previewImage: '/themes/garden-party.jpg',
@@ -207,7 +206,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'halloween-spooky',
-    category: 'seasonal',
     name: 'Halloween Spooky',
     description: 'Festive Halloween with spooky atmosphere',
     previewImage: '/themes/cultural-traditional.jpg',
@@ -249,7 +247,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'harry-potter-magic',
-    category: 'fantasy',
     name: 'Harry Potter Magic',
     description: 'Magical wizarding world with Hogwarts aesthetic',
     previewImage: '/themes/fairytale-fantasy.jpg',
@@ -293,7 +290,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'superhero-epic',
-    category: 'fantasy',
     name: 'Superhero Epic',
     description: 'Powerful superhero with dramatic cityscape',
     previewImage: '/themes/cinematic-movie.jpg',
@@ -335,7 +331,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'mountain-summit',
-    category: 'adventure',
     name: 'Mountain Summit',
     description: 'Adventurous mountain peak with stunning views',
     previewImage: '/themes/beach-sunset.jpg',
@@ -377,7 +372,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'indian-cultural',
-    category: 'cultural',
     name: 'Indian Cultural Wedding',
     description: 'Rich Indian cultural attire with traditional elegance',
     previewImage: '/themes/cultural-traditional.jpg',
@@ -418,7 +412,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'chinese-traditional',
-    category: 'cultural',
     name: 'Traditional Chinese Wedding',
     description: 'Elegant Chinese cultural attire with traditional charm',
     previewImage: '/themes/cultural-traditional.jpg',
@@ -460,7 +453,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'malay-traditional',
-    category: 'cultural',
     name: 'Traditional Malay Wedding',
     description: 'Beautiful Malay cultural attire with traditional elegance',
     previewImage: '/themes/cultural-traditional.jpg',
@@ -502,7 +494,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'winter-wonderland',
-    category: 'seasonal',
     name: 'Winter Wonderland',
     description: 'Magical snowy winter scene with elegant winter attire',
     previewImage: '/themes/fairytale-fantasy.jpg',
@@ -544,7 +535,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'garden-wedding-classic',
-    category: 'wedding',
     name: 'Classic Garden Wedding',
     description: 'Timeless garden wedding with natural beauty',
     previewImage: '/themes/classic-wedding.jpg',
@@ -586,7 +576,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'hot-air-balloon',
-    category: 'adventure',
     name: 'Hot Air Balloon Adventure',
     description: 'Whimsical hot air balloon field with colorful balloons',
     previewImage: '/themes/fairytale-fantasy.jpg',
@@ -628,7 +617,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'jungle-cartoon',
-    category: 'anime',
     name: 'Jungle Cartoon Adventure',
     description: 'Playful cartoon jungle with vibrant colors',
     previewImage: '/themes/watercolor-art.jpg',
@@ -664,7 +652,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'sand-dunes-wedding',
-    category: 'wedding',
     name: 'Desert Sand Dunes Wedding',
     description: 'Romantic desert wedding with golden sand dunes',
     previewImage: '/themes/beach-sunset.jpg',
@@ -706,7 +693,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'singapore-coffee-shop',
-    category: 'local',
     name: 'Singapore Coffee Shop',
     description: 'Nostalgic Singapore kopitiam with local charm',
     previewImage: '/themes/vintage-romance.jpg',
@@ -748,7 +734,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'ski-resort',
-    category: 'adventure',
     name: 'Ski Resort Winter',
     description: 'Snowy ski resort with winter sports elegance',
     previewImage: '/themes/fairytale-fantasy.jpg',
@@ -790,7 +775,6 @@ CRITICAL OUTPUT FORMAT:
   },
   {
     id: 'tropical-beach-wedding',
-    category: 'wedding',
     name: 'Tropical Beach Wedding',
     description: 'Paradise tropical beach wedding with palm trees',
     previewImage: '/themes/beach-sunset.jpg',
@@ -836,6 +820,7 @@ CRITICAL OUTPUT FORMAT:
     description: 'Coming Soon - Design your own custom theme',
     previewImage: '/themes/custom-coming-soon.jpg',
     themeImage: '/themeImage/custom-coming-soon.jpg',
+    category: 'special',
     disabled: true,
     promptTemplate: ``,
   },

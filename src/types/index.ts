@@ -6,6 +6,8 @@ export interface Theme {
   promptTemplate: string;
   referenceImage?: string; // Optional reference image for style guidance
   themeImage?: string; // Image for theme selection display
+  category?: string; // Theme category for filtering
+  disabled?: boolean; // Whether theme is selectable
 }
 
 export interface Lead {

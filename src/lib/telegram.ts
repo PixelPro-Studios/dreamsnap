@@ -128,8 +128,6 @@ export const createTelegramCaption = (
     caption += `\n📱 ${phoneNumber}`;
   }
 
-  caption += '\n\n💫 Created with DreamSnap AI Photography';
-
   return caption;
 };
 

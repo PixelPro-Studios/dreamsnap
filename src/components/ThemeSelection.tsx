@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useAppStore } from '@/stores/appStore';
-import { themes } from '@/lib/themes';
+import { themes, getThemeCategories } from '@/lib/themes';
 import { Theme } from '@/types';
 
 interface ThemeSelectionProps {
@@ -11,8 +11,22 @@ interface ThemeSelectionProps {
 export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }) => {
   const { selectedTheme, selectTheme } = useAppStore();
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  const categories = useMemo(() => getThemeCategories(), []);
+
+  const filteredThemes = useMemo(() => {
+    if (selectedCategory === 'all') {
+      return themes;
+    }
+    return themes.filter(theme => theme.category === selectedCategory);
+  }, [selectedCategory]);
 
   const handleSelectTheme = (theme: Theme) => {
+    // Don't allow selection of disabled themes
+    if (theme.disabled) {
+      return;
+    }
     selectTheme(theme);
   };
 
@@ -41,23 +55,71 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
             </p>
           </div>
 
+          {/* Category Filter */}
+          {categories.length > 0 && (
+            <div className="mb-6 flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-full font-medium transition-all ${
+                  selectedCategory === 'all'
+                    ? 'bg-primary-600 text-white shadow-lg'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                All Themes
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-4 py-2 rounded-full font-medium transition-all capitalize ${
+                    selectedCategory === category
+                      ? 'bg-primary-600 text-white shadow-lg'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Theme grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-          {themes.map((theme) => (
+          {filteredThemes.map((theme) => (
             <div
               key={theme.id}
-              className={`relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300 ${
-                selectedTheme?.id === theme.id
-                  ? 'ring-4 ring-primary-600 scale-105 shadow-2xl'
-                  : 'hover:scale-105 shadow-lg hover:shadow-xl'
+              className={`relative rounded-xl overflow-hidden transition-all duration-300 ${
+                theme.disabled
+                  ? 'opacity-60 cursor-not-allowed'
+                  : selectedTheme?.id === theme.id
+                  ? 'ring-4 ring-primary-600 scale-105 shadow-2xl cursor-pointer'
+                  : 'hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer'
               }`}
               onClick={() => handleSelectTheme(theme)}
-              onMouseEnter={() => setHoveredTheme(theme.id)}
+              onMouseEnter={() => !theme.disabled && setHoveredTheme(theme.id)}
               onMouseLeave={() => setHoveredTheme(null)}
             >
               {/* Theme preview image */}
               <div className="w-full aspect-square bg-gray-200">
-                {theme.themeImage ? (
+                {theme.disabled && theme.id === 'custom-coming-soon' ? (
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary-400 to-pink-500 text-white">
+                    <svg
+                      className="w-24 h-24 mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                      />
+                    </svg>
+                    <p className="text-xl font-bold">Custom Theme</p>
+                  </div>
+                ) : theme.themeImage ? (
                   <img
                     src={theme.themeImage}
                     alt={theme.name}
@@ -92,8 +154,17 @@ export const ThemeSelection: React.FC<ThemeSelectionProps> = ({ onNext, onBack }
                 </p>
               </div>
 
+              {/* Coming Soon badge for disabled themes */}
+              {theme.disabled && (
+                <div className="absolute top-3 left-3 right-3 flex justify-center">
+                  <div className="bg-gray-800 bg-opacity-90 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                    COMING SOON
+                  </div>
+                </div>
+              )}
+
               {/* Selection indicator */}
-              {selectedTheme?.id === theme.id && (
+              {selectedTheme?.id === theme.id && !theme.disabled && (
                 <div className="absolute top-3 right-3 bg-primary-600 rounded-full p-2 shadow-lg">
                   <svg
                     className="w-6 h-6 text-white"
