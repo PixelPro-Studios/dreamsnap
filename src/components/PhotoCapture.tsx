@@ -104,10 +104,9 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
 
   // Adaptive video constraints based on orientation
   const videoConstraints = {
-    width: isPortrait ? { ideal: 1080 } : { ideal: 1920 },
-    height: isPortrait ? { ideal: 1920 } : { ideal: 1080 },
+    width: { ideal: 1920 },
+    height: { ideal: 1080 },
     facingMode: facingMode,
-    aspectRatio: isPortrait ? 9 / 16 : 16 / 9,
   };
 
   return (
@@ -137,6 +136,10 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
             videoConstraints={videoConstraints}
             onUserMediaError={handleUserMediaError}
             className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              transform: isPortrait ? 'rotate(90deg) scale(1.78)' : 'none',
+              transformOrigin: 'center center',
+            }}
           />
 
           {/* Countdown overlay */}
