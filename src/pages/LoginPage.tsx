@@ -13,7 +13,6 @@ export const LoginPage: React.FC = () => {
   // Redirect to home if already logged in
   useEffect(() => {
     if (user) {
-      console.log('User already logged in, redirecting to home');
       navigate('/', { replace: true });
     }
   }, [user, navigate]);
@@ -27,16 +26,11 @@ export const LoginPage: React.FC = () => {
       const { error } = await signIn(email, password);
 
       if (error) {
-        console.error('Login error:', error);
         setError(error.message || 'Failed to sign in. Please check your credentials.');
-      } else {
-        console.log('Login successful');
       }
     } catch (err) {
-      console.error('Unexpected error during login:', err);
       setError('An unexpected error occurred. Please try again.');
     } finally {
-      // Always reset loading state after sign-in attempt
       setIsLoading(false);
     }
   };

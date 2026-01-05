@@ -13,7 +13,6 @@ export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '');
 // Database operations
 export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: any }> => {
   try {
-    console.log('💾 Attempting to save lead data...');
     const { data, error } = await supabase
       .from('leads')
       .insert([
@@ -32,18 +31,12 @@ export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: 
       .single();
 
     if (error) {
-      console.error('❌ Error saving lead:', error);
-      if (error.code === '42501' || error.message?.includes('permission') || error.message?.includes('policy')) {
-        console.error('🔒 Permission denied - RLS policies may not be configured correctly');
-        console.error('📋 Please run the SQL commands in supabase-rls-policies.sql file');
-      }
-    } else {
-      console.log('✅ Lead saved successfully:', data);
+      console.error('Error saving lead:', error.message);
     }
 
     return { data: data as Lead, error };
   } catch (error) {
-    console.error('❌ Exception while saving lead:', error);
+    console.error('Failed to save lead:', error);
     return { data: null, error };
   }
 };
@@ -74,18 +67,11 @@ export const uploadImageToStorage = async (
   bucket: string = 'gallery-photos'
 ): Promise<{ url: string | null; error: any }> => {
   try {
-    console.log('🔄 Converting base64 to blob...');
-    // Convert base64 to blob
     const blob = base64ToBlob(imageBase64);
-    console.log('✅ Blob created, size:', blob.size, 'bytes');
-
-    // Generate unique filename with timestamp
     const timestamp = Date.now();
     const uniqueFileName = `${timestamp}-${fileName}.jpg`;
-    console.log('📝 Uploading file:', uniqueFileName, 'to bucket:', bucket);
 
-    // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from(bucket)
       .upload(uniqueFileName, blob, {
         contentType: 'image/jpeg',
@@ -94,24 +80,17 @@ export const uploadImageToStorage = async (
       });
 
     if (error) {
-      console.error('❌ Error uploading to storage:', error);
-      console.error('Error details:', {
-        message: error.message,
-      });
+      console.error('Storage upload failed:', error.message);
       return { url: null, error };
     }
 
-    console.log('✅ Upload successful, data:', data);
-
-    // Get public URL
     const { data: { publicUrl } } = supabase.storage
       .from(bucket)
       .getPublicUrl(uniqueFileName);
 
-    console.log('🔗 Public URL generated:', publicUrl);
     return { url: publicUrl, error: null };
   } catch (error) {
-    console.error('❌ Error in uploadImageToStorage:', error);
+    console.error('Image upload error:', error);
     return { url: null, error };
   }
 };
@@ -127,31 +106,17 @@ export const saveGalleryPhoto = async (photoData: {
   eventId: string;
 }): Promise<{ data: any; error: any }> => {
   try {
-    console.log('📸 saveGalleryPhoto called with:', {
-      fullName: photoData.fullName,
-      themeSelected: photoData.themeSelected,
-      eventId: photoData.eventId,
-      captionLength: photoData.caption.length,
-      imageBase64Length: photoData.imageBase64.length,
-    });
-
-    // Upload image to Supabase Storage
     const fileName = `${photoData.fullName.replace(/\s+/g, '-').toLowerCase()}-${photoData.themeSelected.replace(/\s+/g, '-').toLowerCase()}`;
-    console.log('🔄 Uploading image to storage...');
     const { url: imageUrl, error: uploadError } = await uploadImageToStorage(
       photoData.imageBase64,
       fileName
     );
 
     if (uploadError || !imageUrl) {
-      console.error('❌ Failed to upload image to storage:', uploadError);
+      console.error('Failed to upload gallery image:', uploadError);
       return { data: null, error: uploadError };
     }
 
-    console.log('✅ Image uploaded successfully, URL:', imageUrl);
-    console.log('💾 Saving metadata to database...');
-
-    // Save metadata to database with storage URL
     const { data, error } = await supabase
       .from('gallery_photos')
       .insert([
@@ -167,20 +132,13 @@ export const saveGalleryPhoto = async (photoData: {
       .single();
 
     if (error) {
-      console.error('❌ Error saving gallery photo metadata:', error);
-      console.error('Error details:', {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-        code: error.code,
-      });
+      console.error('Error saving gallery photo:', error.message);
       return { data: null, error };
     }
 
-    console.log('✅ Gallery photo saved successfully:', data);
     return { data, error: null };
   } catch (error) {
-    console.error('❌ Error in saveGalleryPhoto:', error);
+    console.error('Gallery photo save failed:', error);
     return { data: null, error };
   }
 };

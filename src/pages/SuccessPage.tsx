@@ -71,7 +71,6 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
         if (result.success) {
           // Save to gallery database (uploads image to storage)
           try {
-            console.log('📤 Starting gallery photo upload...');
             const galleryResult = await saveGalleryPhoto({
               imageBase64: finalImage,
               caption: caption,
@@ -81,18 +80,12 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
             });
 
             if (galleryResult.error) {
-              console.error('❌ Gallery save error:', galleryResult.error);
-            } else {
-              console.log('✅ Photo uploaded to storage and saved to gallery database');
-              console.log('📊 Gallery data:', galleryResult.data);
-              // Store the public URL for QR code
-              if (galleryResult.data?.image_url) {
-                setImagePublicUrl(galleryResult.data.image_url);
-              }
+              console.error('Gallery save error:', galleryResult.error);
+            } else if (galleryResult.data?.image_url) {
+              setImagePublicUrl(galleryResult.data.image_url);
             }
           } catch (galleryError) {
-            console.error('❌ Failed to save to gallery database:', galleryError);
-            // Don't fail the whole process if gallery save fails
+            console.error('Failed to save to gallery:', galleryError);
           }
         }
       } catch (error) {

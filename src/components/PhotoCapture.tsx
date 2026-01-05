@@ -188,7 +188,7 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
                 disabled={isCapturing}
                 className="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all disabled:opacity-50 disabled:scale-100 border-4 border-white border-opacity-50"
               >
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-500 to-pink-500 border-4 border-white shadow-inner"></div>
+                <div className="w-20 h-20 rounded-full bg-primary-600 border-4 border-white shadow-inner"></div>
               </button>
 
               {/* Placeholder for symmetry */}
