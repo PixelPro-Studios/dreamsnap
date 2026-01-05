@@ -104,9 +104,10 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
 
   // Adaptive video constraints based on orientation
   const videoConstraints = {
-    width: { ideal: 1920 },
-    height: { ideal: 1080 },
+    width: isPortrait ? { ideal: 1080 } : { ideal: 1920 },
+    height: isPortrait ? { ideal: 1920 } : { ideal: 1080 },
     facingMode: facingMode,
+    aspectRatio: isPortrait ? 9 / 16 : 16 / 9,
   };
 
   return (
@@ -136,10 +137,6 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
             videoConstraints={videoConstraints}
             onUserMediaError={handleUserMediaError}
             className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              transform: isPortrait ? 'rotate(90deg) scale(1.78)' : 'none',
-              transformOrigin: 'center center',
-            }}
           />
 
           {/* Countdown overlay */}
@@ -165,46 +162,43 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* Controls - bottom of screen */}
-          <div className="absolute bottom-0 left-0 right-0 pb-8 px-6 z-20">
-            <div className="flex items-center justify-between max-w-xl mx-auto">
-              {/* Flip camera button */}
-              <button
-                onClick={toggleCamera}
-                disabled={isCapturing}
-                className="w-16 h-16 rounded-full bg-white bg-opacity-90 backdrop-blur-md flex items-center justify-center text-gray-800 hover:bg-opacity-100 hover:scale-110 transition-all disabled:opacity-50 shadow-2xl border-2 border-white border-opacity-50"
+          {/* Controls - right center of screen */}
+          <div className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 flex flex-col items-center gap-6">
+            {/* Flip camera button */}
+            <button
+              onClick={toggleCamera}
+              disabled={isCapturing}
+              className="w-16 h-16 rounded-full bg-white bg-opacity-90 backdrop-blur-md flex items-center justify-center text-gray-800 hover:bg-opacity-100 hover:scale-110 transition-all disabled:opacity-50 shadow-2xl border-2 border-white border-opacity-50"
+            >
+              <svg
+                className="w-7 h-7"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                </svg>
-              </button>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              </svg>
+            </button>
 
-              {/* Capture button */}
-              <button
-                onClick={startCapture}
-                disabled={isCapturing}
-                className="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all disabled:opacity-50 disabled:scale-100 border-4 border-white border-opacity-50"
-              >
-                <div className="w-20 h-20 rounded-full bg-primary-600 border-4 border-white shadow-inner"></div>
-              </button>
+            {/* Capture button */}
+            <button
+              onClick={startCapture}
+              disabled={isCapturing}
+              className="w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all disabled:opacity-50 disabled:scale-100 border-4 border-white border-opacity-50"
+            >
+              <div className="w-20 h-20 rounded-full bg-primary-600 border-4 border-white shadow-inner"></div>
+            </button>
+          </div>
 
-              {/* Placeholder for symmetry */}
-              <div className="w-16 h-16"></div>
-            </div>
-
-            {/* Capturing status text */}
-            {capturedPhotos.length > 0 && capturedPhotos.length < PHOTO_COUNT && !isCapturing && (
-              <p className="text-center text-white text-sm mt-4 bg-black bg-opacity-30 backdrop-blur-sm py-2 px-4 rounded-full inline-block mx-auto block">
+          {/* Capturing status text */}
+          {capturedPhotos.length > 0 && capturedPhotos.length < PHOTO_COUNT && !isCapturing && (
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
+              <p className="text-center text-white text-sm bg-black bg-opacity-30 backdrop-blur-sm py-2 px-4 rounded-full">
                 Hold still...
               </p>
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
     </div>

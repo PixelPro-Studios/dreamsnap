@@ -19,21 +19,11 @@
 @layer base {
   * {
     font-family: var(--font-family-base);
-    -webkit-text-size-adjust: 100%;
-  }
-
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    position: fixed;
-    overscroll-behavior: none;
   }
 
   body {
     @apply bg-gradient-to-br from-purple-50 to-pink-50 min-h-screen;
     font-family: var(--font-family-base);
-    touch-action: pan-y;
   }
 
   h1, h2, h3, h4, h5, h6 {
