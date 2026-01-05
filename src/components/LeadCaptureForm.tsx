@@ -16,6 +16,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
     phoneNumber: '',
     countryCode: '+65', // Default to Singapore
     consentGiven: false,
+    wouldPayForProduct: false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -98,6 +99,7 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
         phoneNumber: formData.phoneNumber.trim(),
         countryCode: formData.countryCode,
         consentGiven: formData.consentGiven,
+        wouldPayForProduct: formData.wouldPayForProduct,
         themeSelected: selectedTheme?.name || 'Unknown',
         eventId: import.meta.env.VITE_EVENT_ID || 'default',
       };
@@ -224,6 +226,21 @@ export const LeadCaptureForm: React.FC<LeadCaptureFormProps> = ({ onSubmit }) =>
             {errors.consent && (
               <p className="text-red-500 text-sm mt-2 ml-9 font-semibold">{errors.consent}</p>
             )}
+          </div>
+
+          {/* Would Pay for Product */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-5 rounded-xl border-2 border-blue-200">
+            <label className="flex items-start cursor-pointer">
+              <input
+                type="checkbox"
+                checked={formData.wouldPayForProduct}
+                onChange={(e) => setFormData({ ...formData, wouldPayForProduct: e.target.checked })}
+                className="mt-1 mr-3 w-6 h-6 text-blue-600 border-gray-300 rounded-md focus:ring-blue-500 focus:ring-2"
+              />
+              <span className="text-sm text-gray-800 font-medium">
+                I would be interested in paying for this as a software product.
+              </span>
+            </label>
           </div>
 
           {/* Privacy note */}

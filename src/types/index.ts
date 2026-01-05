@@ -20,6 +20,7 @@ export interface Lead {
   consentGiven: boolean;
   eventId?: string;
   themeSelected: string;
+  wouldPayForProduct?: boolean;
   createdAt?: string;
 }
 

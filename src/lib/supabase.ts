@@ -69,6 +69,7 @@ export const saveLead = async (lead: Lead): Promise<{ data: Lead | null; error: 
             country_code: lead.countryCode,
             consent_given: lead.consentGiven,
             theme_selected: lead.themeSelected,
+            would_pay_for_product: lead.wouldPayForProduct || false,
             event_id: lead.eventId || import.meta.env.VITE_EVENT_ID || 'default',
           },
         ])
@@ -251,11 +252,13 @@ CREATE TABLE IF NOT EXISTS leads (
     consent_given BOOLEAN NOT NULL DEFAULT FALSE,
     event_id TEXT,
     theme_selected TEXT NOT NULL,
+    would_pay_for_product BOOLEAN DEFAULT FALSE,
     notes TEXT
 );
 
 CREATE INDEX IF NOT EXISTS idx_leads_created_at ON leads(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_leads_event_id ON leads(event_id);
+CREATE INDEX IF NOT EXISTS idx_leads_would_pay ON leads(would_pay_for_product) WHERE would_pay_for_product = TRUE;
 `;
 
 export const GALLERY_PHOTOS_TABLE_SCHEMA = `
