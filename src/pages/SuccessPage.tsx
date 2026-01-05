@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useAppStore } from '@/stores/appStore';
-import { downloadImage, generateFilename } from '@/lib/imageUtils';
 import { saveLead, saveGalleryPhoto } from '@/lib/supabase';
 import { sendPhotoToTelegram, createTelegramCaption } from '@/lib/telegram';
 import { Lead } from '@/types';
@@ -44,15 +43,7 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
 
       setSavedLeadId(savedLead.id || null);
 
-      // 2. Download photo automatically
-      try {
-        const filename = generateFilename(leadData.fullName);
-        downloadImage(finalImage, filename);
-      } catch (error) {
-        console.error('Download error:', error);
-      }
-
-      // 3. Send photo to Telegram and save to gallery
+      // 2. Send photo to Telegram and save to gallery
       try {
         const instagramHandles = [leadData.instagramHandle1, leadData.instagramHandle2].filter(Boolean) as string[];
         const phoneWithCountryCode = `${leadData.countryCode}${leadData.phoneNumber}`;
