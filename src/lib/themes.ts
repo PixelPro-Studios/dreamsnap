@@ -530,47 +530,6 @@ CRITICAL OUTPUT FORMAT:
 - Do NOT create square images - output must be vertical portrait`,
   },
   {
-    id: 'military-formal',
-    name: 'Military Formal',
-    description: 'Distinguished military formal attire with honor',
-    previewImage: '/themes/black-white-elegance.jpg',
-    referenceImage: '/previewImage/14.Military.jpg',
-    themeImage: '/themeImage/14.Military.jpg',
-    promptTemplate: `Transform this photo into distinguished military formal portrait.
-
-🚨 CRITICAL FACE PRESERVATION RULES (HIGHEST PRIORITY - NON-NEGOTIABLE):
-
-1. COPY the face(s) from the captured image EXACTLY as-is - pixel-perfect preservation required
-2. DO NOT modify, alter, enhance, smooth, or change ANY facial features whatsoever
-3. Preserve EXACT: eyes, nose, mouth, chin, jawline, skin tone, skin texture, wrinkles, freckles, moles, facial hair
-4. NO beautification, NO facial smoothing, NO AI enhancements
-5. ONLY lighting may be adjusted to match the scene - facial structure stays 100% identical
-
-⚠️ Any face modification = CRITICAL FAILURE - When in doubt, preserve perfectly
-
-REQUIRED CHANGES:
-- ALWAYS transform ALL clothing into military dress uniform - this is MANDATORY
-  * Formal military dress uniform with medals and insignia
-  * Professional military bearing and formal attire
-  * No exceptions - transform into military formal uniform
-- Apply formal, dignified lighting
-- Background MUST be formal military or ceremonial setting
-- Distinguished, honorable military atmosphere
-
-STYLE TO APPLY:
-- Distinguished military formal atmosphere
-- Formal, dignified lighting with sharp details
-- Formal military background or ceremonial setting
-- Professional, honorable composition
-- Medals, insignia, formal military elements
-- Keep the face as the central focus with perfect clarity
-
-CRITICAL OUTPUT FORMAT:
-- IGNORE the reference image's aspect ratio completely
-- OUTPUT MUST BE: Portrait orientation 1080x1920 pixels (vertical/tall format)
-- Do NOT create square images - output must be vertical portrait`,
-  },
-  {
     id: 'garden-wedding-classic',
     name: 'Classic Garden Wedding',
     description: 'Timeless garden wedding with natural beauty',
