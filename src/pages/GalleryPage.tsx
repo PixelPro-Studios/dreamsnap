@@ -144,13 +144,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
           ))}
         </div>
       </div>
-
-      {/* Centered overlay text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <h1 className="text-white font-black text-8xl tracking-wider uppercase opacity-90 drop-shadow-[0_0_30px_rgba(0,0,0,0.9)]">
-          Free AI Photobooth
-        </h1>
-      </div>
     </div>
   );
 };
