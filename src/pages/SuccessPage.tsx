@@ -113,6 +113,15 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
 
         {(status === 'success' || status === 'error') && (
           <>
+            {/* DreamSnap Logo */}
+            <div className="flex justify-center mb-4 sm:mb-6">
+              <img
+                src="/dreamsnap-logo.png"
+                alt="DreamSnap"
+                className="h-12 sm:h-16 w-auto"
+              />
+            </div>
+
             {/* Success header - compact */}
             <div className="text-center mb-2 sm:mb-4">
               <div className="inline-block bg-gradient-to-r from-primary-600 to-pink-600 rounded-full p-2.5 sm:p-4 mb-2 sm:mb-3 shadow-xl">

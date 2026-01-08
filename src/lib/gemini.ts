@@ -72,7 +72,7 @@ export const generateImageWithGemini = async ({
       responseModalities: ['IMAGE', 'TEXT'],
     };
 
-    const model = 'gemini-3-pro-image-preview';
+    const model = 'gemini-2.5-flash-image';
 
     // Prepare parts array
     const parts: any[] = [
