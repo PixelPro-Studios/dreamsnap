@@ -239,6 +239,45 @@ export const fetchGalleryPhotos = async (eventId?: string): Promise<any[]> => {
   }
 };
 
+/**
+ * Subscribe to new gallery photo inserts in real-time
+ * Returns an unsubscribe function to clean up the subscription
+ */
+export const subscribeToGalleryPhotos = (
+  eventId: string,
+  onInsert: (newPhoto: any) => void,
+  onError?: (error: any) => void
+): (() => void) => {
+  const channel = supabase
+    .channel(`gallery_photos_${eventId}`)
+    .on(
+      'postgres_changes',
+      {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'gallery_photos',
+        filter: `event_id=eq.${eventId}`
+      },
+      (payload) => {
+        console.log('New gallery photo received:', payload.new);
+        onInsert(payload.new);
+      }
+    )
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        console.log('Subscribed to gallery photos real-time updates');
+      } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+        console.error('Subscription error:', status);
+        onError?.(new Error(`Subscription ${status}`));
+      }
+    });
+
+  return () => {
+    console.log('Unsubscribing from gallery photos');
+    supabase.removeChannel(channel);
+  };
+};
+
 // SQL Schema for reference
 export const LEADS_TABLE_SCHEMA = `
 CREATE TABLE IF NOT EXISTS leads (

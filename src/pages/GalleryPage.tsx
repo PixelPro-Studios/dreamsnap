@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { fetchGalleryPhotos } from '@/lib/supabase';
+import { useEffect, useState, useCallback } from 'react';
+import { fetchGalleryPhotos, subscribeToGalleryPhotos } from '@/lib/supabase';
 
 interface GalleryPhoto {
   id: string;
@@ -17,10 +17,75 @@ interface GalleryPageProps {
 export const GalleryPage: React.FC<GalleryPageProps> = () => {
   const [photos, setPhotos] = useState<GalleryPhoto[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [newPhotoPopup, setNewPhotoPopup] = useState<GalleryPhoto | null>(null);
+
+  // Transform photo data helper
+  const transformPhoto = useCallback((item: any): GalleryPhoto => ({
+    id: item.id,
+    url: item.image_url,
+    caption: item.caption,
+    date: new Date(item.created_at),
+    fullName: item.full_name,
+    themeSelected: item.theme_selected,
+  }), []);
 
   useEffect(() => {
     loadPhotos();
   }, []);
+
+  // Auto-refresh every 15 minutes
+  useEffect(() => {
+    const refreshInterval = setInterval(() => {
+      console.log('Auto-refreshing gallery...');
+      loadPhotos();
+    }, 900000); // 15 minutes (900 seconds)
+
+    return () => {
+      clearInterval(refreshInterval);
+    };
+  }, []);
+
+  // Real-time subscription for new photos
+  useEffect(() => {
+    const eventId = import.meta.env.VITE_EVENT_ID;
+    if (!eventId) {
+      console.warn('No event ID found, real-time updates disabled');
+      return;
+    }
+
+    const unsubscribe = subscribeToGalleryPhotos(
+      eventId,
+      (newPhoto) => {
+        const transformedPhoto = transformPhoto(newPhoto);
+        setPhotos((prevPhotos) => {
+          // Prevent duplicates
+          if (prevPhotos.some(p => p.id === transformedPhoto.id)) {
+            return prevPhotos;
+          }
+
+          // Show popup for new photo
+          setNewPhotoPopup(transformedPhoto);
+
+          // Hide popup and add to gallery after 3 seconds
+          setTimeout(() => {
+            setNewPhotoPopup(null);
+          }, 3000);
+
+          // Prepend new photo (newest first)
+          return [transformedPhoto, ...prevPhotos];
+        });
+      },
+      (error) => {
+        console.error('Real-time subscription error:', error);
+        setError('Real-time updates temporarily unavailable');
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [transformPhoto]);
 
   const loadPhotos = async () => {
     try {
@@ -36,15 +101,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
         return;
       }
 
-      // Transform data to GalleryPhoto format
-      const transformedPhotos: GalleryPhoto[] = galleryData.map((item: any) => ({
-        id: item.id,
-        url: item.image_url,
-        caption: item.caption,
-        date: new Date(item.created_at),
-        fullName: item.full_name,
-        themeSelected: item.theme_selected,
-      }));
+      // Transform data to GalleryPhoto format using helper
+      const transformedPhotos: GalleryPhoto[] = galleryData.map(transformPhoto);
 
       setPhotos(transformedPhotos);
     } catch (err) {
@@ -58,6 +116,22 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
         <div className="inline-block w-16 h-16 border-8 border-gray-700 border-t-white rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="text-white text-center">
+          <p className="text-xl mb-4">{error}</p>
+          <button
+            onClick={loadPhotos}
+            className="px-6 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
       </div>
     );
   }
@@ -97,11 +171,28 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
             transform: translateX(0);
           }
         }
+        @keyframes popIn {
+          0% {
+            transform: scale(0) rotate(-10deg);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.2) rotate(5deg);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
+          }
+        }
         .scroll-left {
-          animation: scrollLeft 40s linear infinite;
+          animation: scrollLeft 120s linear infinite;
         }
         .scroll-right {
-          animation: scrollRight 40s linear infinite;
+          animation: scrollRight 120s linear infinite;
+        }
+        .pop-in {
+          animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
       `}</style>
 
@@ -144,6 +235,21 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
           ))}
         </div>
       </div>
+
+      {/* New Photo Popup Overlay */}
+      {newPhotoPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 pointer-events-none">
+          <div className="pop-in max-w-md w-full px-4">
+            <div className="relative aspect-[9/16] overflow-hidden rounded-2xl shadow-2xl">
+              <img
+                src={newPhotoPopup.url}
+                alt="New photo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
