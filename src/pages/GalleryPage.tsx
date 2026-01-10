@@ -141,19 +141,14 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
   }
 
   // Ensure we have enough photos to fill the screen by duplicating
-  const minPhotosNeeded = 20; // Enough to fill 2 rows
+  const minPhotosNeeded = 15; // Enough to fill 1 row
   let allPhotos = [...photos];
   while (allPhotos.length < minPhotosNeeded) {
     allPhotos = [...allPhotos, ...photos];
   }
 
-  // Split photos into two rows for alternating scroll
-  const midpoint = Math.ceil(allPhotos.length / 2);
-  const row1Photos = allPhotos.slice(0, midpoint);
-  const row2Photos = allPhotos.slice(midpoint);
-
   return (
-    <div className="h-screen bg-black overflow-hidden flex flex-col justify-center relative">
+    <div className="h-screen bg-black overflow-hidden flex items-center justify-center relative">
       <style>{`
         @keyframes scrollLeft {
           0% {
@@ -161,14 +156,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
           }
           100% {
             transform: translateX(-50%);
-          }
-        }
-        @keyframes scrollRight {
-          0% {
-            transform: translateX(-50%);
-          }
-          100% {
-            transform: translateX(0);
           }
         }
         @keyframes popIn {
@@ -186,44 +173,21 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
           }
         }
         .scroll-left {
-          animation: scrollLeft 120s linear infinite;
-        }
-        .scroll-right {
-          animation: scrollRight 120s linear infinite;
+          animation: scrollLeft 60s linear infinite;
         }
         .pop-in {
           animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
       `}</style>
 
-      {/* Row 1 - Scrolling Left */}
-      <div className="overflow-hidden mb-4">
+      {/* Single Row - Scrolling Left */}
+      <div className="overflow-hidden w-full">
         <div className="flex gap-4 scroll-left">
           {/* Duplicate photos for seamless loop */}
-          {[...row1Photos, ...row1Photos].map((photo, index) => (
+          {[...allPhotos, ...allPhotos].map((photo, index) => (
             <div
-              key={`row1-${photo.id}-${index}`}
-              className="flex-shrink-0 h-[42vh] w-auto aspect-[9/16] overflow-hidden rounded-lg"
-            >
-              <img
-                src={photo.url}
-                alt=""
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Row 2 - Scrolling Right */}
-      <div className="overflow-hidden">
-        <div className="flex gap-4 scroll-right">
-          {/* Duplicate photos for seamless loop */}
-          {[...row2Photos, ...row2Photos].map((photo, index) => (
-            <div
-              key={`row2-${photo.id}-${index}`}
-              className="flex-shrink-0 h-[42vh] w-auto aspect-[9/16] overflow-hidden rounded-lg"
+              key={`${photo.id}-${index}`}
+              className="flex-shrink-0 h-[80vh] w-auto aspect-[9/16] overflow-hidden rounded-lg"
             >
               <img
                 src={photo.url}
