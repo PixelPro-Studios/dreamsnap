@@ -18,6 +18,7 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [savedLeadId, setSavedLeadId] = useState<string | null>(null);
   const [imagePublicUrl, setImagePublicUrl] = useState<string | null>(null);
+  const [errorLog, setErrorLog] = useState<string[]>([]);
   const hasProcessedRef = useRef(false);
 
   useEffect(() => {
@@ -27,24 +28,37 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
     processSubmission();
   }, []);
 
+  const addErrorLog = (message: string, error?: any) => {
+    const errorDetails = error ? `${message}: ${JSON.stringify(error, null, 2)}` : message;
+    console.error(errorDetails);
+    setErrorLog(prev => [...prev, errorDetails]);
+  };
+
   const processSubmission = async () => {
     if (!finalImage) {
+      addErrorLog('ERROR: No final image found');
       setStatus('error');
       return;
     }
 
     try {
+      addErrorLog('Step 1: Saving lead to database...');
+
       // 1. Save lead to Supabase
       const { data: savedLead, error: leadError } = await saveLead(leadData);
 
       if (leadError || !savedLead) {
+        addErrorLog('FAILED: Lead save error', leadError);
         throw new Error('Failed to save lead data');
       }
 
+      addErrorLog(`SUCCESS: Lead saved with ID: ${savedLead.id}`);
       setSavedLeadId(savedLead.id || null);
 
       // 2. Send photo to Telegram and save to gallery
       try {
+        addErrorLog('Step 2: Sending photo to Telegram...');
+
         const instagramHandles = [leadData.instagramHandle1, leadData.instagramHandle2].filter(Boolean) as string[];
         const phoneWithCountryCode = `${leadData.countryCode}${leadData.phoneNumber}`;
         const caption = createTelegramCaption(
@@ -60,8 +74,12 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
         });
 
         if (result.success) {
+          addErrorLog('SUCCESS: Photo sent to Telegram');
+
           // Save to gallery database (uploads image to storage)
           try {
+            addErrorLog('Step 3: Saving to gallery...');
+
             const galleryResult = await saveGalleryPhoto({
               imageBase64: finalImage,
               caption: caption,
@@ -71,22 +89,26 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
             });
 
             if (galleryResult.error) {
-              console.error('Gallery save error:', galleryResult.error);
+              addErrorLog('FAILED: Gallery save error', galleryResult.error);
             } else if (galleryResult.data?.image_url) {
+              addErrorLog(`SUCCESS: Gallery saved, URL: ${galleryResult.data.image_url}`);
               setImagePublicUrl(galleryResult.data.image_url);
             }
           } catch (galleryError) {
-            console.error('Failed to save to gallery:', galleryError);
+            addErrorLog('EXCEPTION: Gallery save failed', galleryError);
           }
+        } else {
+          addErrorLog('FAILED: Telegram send failed', result);
         }
       } catch (error) {
-        console.error('Telegram error:', error);
+        addErrorLog('EXCEPTION: Telegram error', error);
       }
 
       // Mark as success
+      addErrorLog('All steps completed - Marking as success');
       setStatus('success');
     } catch (error) {
-      console.error('Error processing submission:', error);
+      addErrorLog('CRITICAL ERROR: Processing submission failed', error);
       setStatus('error');
     }
   };
@@ -136,6 +158,20 @@ export const SuccessPage: React.FC<SuccessPageProps> = ({
                 {status === 'success' ? 'Your photo will be sent to you shortly' : 'We encountered some issues'}
               </p>
             </div>
+
+            {/* Error Log Display */}
+            {status === 'error' && errorLog.length > 0 && (
+              <div className="mb-4 sm:mb-6">
+                <div className="bg-gray-900 text-green-400 p-4 rounded-lg font-mono text-xs max-h-96 overflow-y-auto">
+                  <div className="mb-2 text-white font-bold border-b border-gray-700 pb-2">Debug Log:</div>
+                  {errorLog.map((log, index) => (
+                    <div key={index} className="mb-1 whitespace-pre-wrap break-words">
+                      {log}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* QR Code section - centered */}
             {imagePublicUrl && (
