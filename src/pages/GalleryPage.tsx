@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { fetchGalleryPhotos, subscribeToGalleryPhotos } from '@/lib/supabase';
 
 interface GalleryPhoto {
@@ -19,6 +19,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newPhotoPopup, setNewPhotoPopup] = useState<GalleryPhoto | null>(null);
+  const [shuffleKey, setShuffleKey] = useState(0);
 
   // Transform photo data helper
   const transformPhoto = useCallback((item: any): GalleryPhoto => ({
@@ -43,6 +44,17 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
 
     return () => {
       clearInterval(refreshInterval);
+    };
+  }, []);
+
+  // Reshuffle photos every 60 seconds (when animation loop completes)
+  useEffect(() => {
+    const reshuffleInterval = setInterval(() => {
+      setShuffleKey(prev => prev + 1);
+    }, 60000); // 60 seconds to match animation duration
+
+    return () => {
+      clearInterval(reshuffleInterval);
     };
   }, []);
 
@@ -86,6 +98,29 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
       unsubscribe();
     };
   }, [transformPhoto]);
+
+  // Shuffle photos randomly - memoized with shuffleKey to trigger reshuffle
+  // MUST be before conditional returns to avoid hook ordering issues
+  const allPhotos = useMemo(() => {
+    if (photos.length === 0) return [];
+
+    const shuffleArray = <T,>(array: T[]): T[] => {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    };
+
+    // Ensure we have enough photos to fill the screen by duplicating
+    const minPhotosNeeded = 15; // Enough to fill 1 row
+    let result = shuffleArray([...photos]);
+    while (result.length < minPhotosNeeded) {
+      result = [...result, ...shuffleArray([...photos])];
+    }
+    return result;
+  }, [photos, shuffleKey]);
 
   const loadPhotos = async () => {
     try {
@@ -140,22 +175,33 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
     return <div className="min-h-screen bg-black"></div>;
   }
 
-  // Ensure we have enough photos to fill the screen by duplicating
-  const minPhotosNeeded = 15; // Enough to fill 1 row
-  let allPhotos = [...photos];
-  while (allPhotos.length < minPhotosNeeded) {
-    allPhotos = [...allPhotos, ...photos];
-  }
-
   return (
     <div className="h-screen bg-black overflow-hidden flex items-center justify-center relative">
       <style>{`
         @keyframes scrollLeft {
           0% {
             transform: translateX(0);
+            opacity: 1;
+          }
+          97% {
+            transform: translateX(-50%);
+            opacity: 1;
+          }
+          99% {
+            transform: translateX(-50%);
+            opacity: 0;
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(0);
+            opacity: 0;
+          }
+        }
+        @keyframes fadeIn {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
           }
         }
         @keyframes popIn {
@@ -173,7 +219,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
           }
         }
         .scroll-left {
-          animation: scrollLeft 60s linear infinite;
+          animation: scrollLeft 60s linear infinite, fadeIn 1s ease-in;
         }
         .pop-in {
           animation: popIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
@@ -182,7 +228,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = () => {
 
       {/* Single Row - Scrolling Left */}
       <div className="overflow-hidden w-full">
-        <div className="flex gap-4 scroll-left">
+        <div key={shuffleKey} className="flex gap-4 scroll-left">
           {/* Duplicate photos for seamless loop */}
           {[...allPhotos, ...allPhotos].map((photo, index) => (
             <div
